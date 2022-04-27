@@ -5,7 +5,6 @@ import json
 from dash.dependencies import Input, Output
 import plotly.express as px
 
-titles=["Name","Datasets"]
 categories=["display_name","package_count"]
 ministries = []
 
@@ -40,7 +39,7 @@ def getData():
     return df.to_dict('records')
 
 app.layout = html.Div([
-    dcc.Interval('table-update', interval = 100*1000, n_intervals = 0),
+    dcc.Interval('table-update', interval = 300*1000, n_intervals = 0),
 
     html.Div([
         dcc.Graph(id='graph')
@@ -59,7 +58,7 @@ def update_table(n):
     return getData()
 
 @app.callback(Output('graph', 'figure'), [Input('table-update', 'n_intervals')])
-def update_graph(my_dropdown):
+def update_graph(n):
     df=getData()
     pie = px.pie(df, values='package_count', names='display_name', title='GovData Dashboard')
     pie.update_traces(textposition='inside')
