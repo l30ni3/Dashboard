@@ -9,15 +9,17 @@ Download the project files and navigate to the project.
 
 `cd Dashboard`
 
-Make sure, you have Python 3 and pip installed. To install all dependencies please install the package manager pipenv and install all packages from the Pipfile.
+Make sure, you have Python 3 and pip installed. To install all dependencies please install the package manager pipenv first.
 
 `pip install pipenv` 
-
-`pipenv install` 
 
 Next, activate the pipenv shell. This will spawn a new shell subprocess and can be deactivated by using exit.
 
 `pipenv shell`
+
+Now you can install all packages from the Pipfile.
+
+`pipenv install` 
 
 Run the app from root directory:
 
