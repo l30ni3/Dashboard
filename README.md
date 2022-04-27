@@ -1,29 +1,18 @@
 GovData Dashboard
 ==============================
 
-A small <a target="_blank" href="https://github.com/plotly/dasht">Dash</a> application, that provides a dashboard showing how many data sets each federal ministry has made available. This project uses the <a target="_blank" href="http://docs.ckan.org/en/2.9/api/">CKAN API</a> to retrieve data from  <a target="_blank" href="https://www.govdata.de/">GovData</a>.
+A small <a target="_blank" href="https://github.com/plotly/dash">Dash</a> application, that provides a dashboard showing how many data sets each federal ministry has made available. This project uses the <a target="_blank" href="http://docs.ckan.org/en/2.9/api/">CKAN API</a> to retrieve data from  <a target="_blank" href="https://www.govdata.de/">GovData</a>.
 
 Getting Started 
 ------------
 Download the project files and navigate to the project. Make sure, you have Python 3 and pip installed. 
 
 #### Install packages with pip
-To install all dependencies create and activate a virtual environment first and run the following command to install from requirements.txt:
+To install all dependencies <a target="_blank" href="https://docs.python.org/3/library/venv.html">create and activate a virtual environment</a> first and run the following command to install from requirements.txt:
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt` 
 
-#### Install packages with pipenv
-You can also install the packages with the package manager pipenv. Therefore install the package manager first by typing:
-
-`pip install pipenv` 
-
-Next, activate the pipenv shell, to create a virtual environment for this project. This will spawn a new shell subprocess and can be deactivated by using exit.
-
-`pipenv shell`
-
-You can now install all packages from Pipfile:
-
-`pipenv install` 
+#### Run the code
 
 Run the app from root directory. The Dash app is now running on https://127.0.0.1:8050/
 
