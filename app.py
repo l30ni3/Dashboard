@@ -3,6 +3,7 @@ import pandas as pd
 import requests
 import json
 from dash.dependencies import Input, Output
+import plotly.express as px
 
 titles=["Name","Datasets"]
 categories=["display_name","package_count"]
@@ -39,13 +40,11 @@ def getData():
     return df.to_dict('records')
 
 app.layout = html.Div([
-    html.H1('GovData Dashboard'),
+    dcc.Interval('table-update', interval = 300*1000, n_intervals = 0),
 
-    html.Div('''
-        A small web application that provides information about how many data sets each federal ministry has made available on GovData.
-    ''', style={'marginBottom': 20}),
-
-    dcc.Interval('table-update', interval = 1000, n_intervals = 0),
+    html.Div([
+        dcc.Graph(id='graph')
+    ]),
     
     dash_table.DataTable(
           id = 'table',
@@ -57,7 +56,15 @@ app.layout = html.Div([
 # callback to update data every 5 minutes
 @app.callback(Output('table','data'), [Input('table-update', 'n_intervals')])
 def updateTable(n):
-     return getData()
+    return getData()
+
+@app.callback(Output('graph', 'figure'), [Input('table-update', 'n_intervals')])
+def update_graph(my_dropdown):
+    df=getData()
+    pie = px.pie(df, values='package_count', names='display_name', title='GovData Dashboard')
+    pie.update_traces(textposition='inside')
+    pie.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+    return(pie)
 
 
 if __name__ == '__main__':
