@@ -40,6 +40,8 @@ def getData():
     return df.to_dict('records')
 
 app.layout = html.Div([
+    html.H1(children='Hello Dash'),
+    
     dcc.Interval('table-update', interval = 100*1000, n_intervals = 0),
 
     html.Div([
