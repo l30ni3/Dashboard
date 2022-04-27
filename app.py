@@ -1,17 +1,18 @@
-from dash import Dash, html, dcc
+from dash import Dash, html, dcc, dash_table
 import pandas as pd
 import requests
 import json
 from dash.dependencies import Input, Output
 
-titles=["Name","Provided datasets"]
+titles=["Name","Datasets"]
 categories=["display_name","package_count"]
 ministries = []
-data = []
+
 
 app = Dash(__name__)
 
-def generate_table():
+def getData():
+    data = []
     # obtain data from ckan API
     gov_requests = requests.get(
         "https://www.govdata.de/ckan/api/3/action/organization_list?all_fields=true&sort=package_count%20desc"
@@ -35,41 +36,28 @@ def generate_table():
 
     # create data frame
     df = pd.DataFrame(data)
-    
-    return html.Table([
-        html.Thead(
-            html.Tr([html.Th(col) for col in titles])
-        ),
-        html.Tbody([
-            html.Tr([
-                html.Td(df.iloc[i][col]) for col in categories
-            ]) for i in range(len(df))
-        ])
-    ])
+    return df.to_dict('records')
 
 app.layout = html.Div([
-    dcc.Interval(
-            id='interval',
-            interval=300*1000,
-            n_intervals=0
-        ),
-
     html.H1('GovData Dashboard'),
 
     html.Div('''
         A small web application that provides information about how many data sets each federal ministry has made available on GovData.
     ''', style={'marginBottom': 20}),
 
-    html.Div([
-        html.Div(id="gov_data", children=generate_table()
-        )
-    ]),
+    dcc.Interval('table-update', interval = 1000, n_intervals = 0),
+    
+    dash_table.DataTable(
+          id = 'table',
+          data = getData(),
+            columns= [{"name": i, "id": i} for i in categories]),
+
 ]) 
 
 # callback to update data every 5 minutes
-@app.callback(Output("gov_data", "children"), [Input("interval", "n_intervals")])
-def update_data_div(n):
-    return generate_table()()
+@app.callback(Output('table','data'), [Input('table-update', 'n_intervals')])
+def updateTable(n):
+     return getData()
 
 
 if __name__ == '__main__':
